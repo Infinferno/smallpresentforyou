@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Private Entry</title>
+
+<style>
+:root {
+    --bg: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    --card: #ffffff;
+    --text: #333;
+    --btn: #ff758c;
+}
+
+body.dark {
+    --bg: linear-gradient(135deg, #1f2933, #111827);
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --btn: #ec4899;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.card {
+    background: var(--card);
+    color: var(--text);
+    width: 420px;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: pop 0.9s ease;
+    z-index: 10;
+}
+
+@keyframes pop {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px 35px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    background: var(--btn);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.hidden { display: none; }
+
+.message { margin-top: 15px; }
+
+.error { color: #ef4444; }
+.success { color: #22c55e; }
+
+/* HEARTS */
+.heart {
+    position: absolute;
+    bottom: -30px;
+    font-size: 22px;
+    animation: float 6s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 0.7; }
+    100% { transform: translateY(-120vh); opacity: 0; }
+}
+
+/* TOGGLES */
+.top-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.toggle {
+    cursor: pointer;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 20px;
+    padding: 8px 15px;
+    margin-left: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-controls">
+    <span class="toggle" onclick="toggleDark()">🌙 Dark</span>
+    
+</div>
+
+<div class="card">
+    <h2>Hey there, enter who you are!!</h2>
+
+    <input id="answer" type="password" placeholder="Your secret name">
+
+    <button onclick="check()">Submit</button>
+
+    <p id="error" class="message error hidden">Sorry it's not for you 😔</p>
+
+    <div id="success" class="hidden">
+        <p class="message success">Welcome, Sweetie 💖</p>
+        <button onclick="goNext()">Continue</button>
+    </div>
+</div>
+
+
+<script>
+/* DARK MODE */
+function toggleDark() {
+    document.body.classList.toggle("dark");
+}
+
+
+
+/* HEARTS */
+function heart() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "💖";
+    h.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 6000);
+}
+setInterval(heart, 500);
+
+/* SIMPLE ACCESS LOGIC */
+let tries = 0;
+const MAX = 3;
+const SECRET = "sweetie ji";
+
+function check() {
+    const input = document
+        .getElementById("answer")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const error = document.getElementById("error");
+    const success = document.getElementById("success");
+
+    if (input === SECRET) {
+        error.classList.add("hidden");
+        success.classList.remove("hidden");
+    } else {
+        tries++;
+        error.classList.remove("hidden");
+
+        if (tries >= MAX) {
+            error.textContent = "Access locked 🚫";
+            document.querySelector("button").disabled = true;
+        }
+    }
+}
+
+function goNext() {
+    window.location.href = "welcome.html";
+}
+</script>
+
+
+</body>
+</html>

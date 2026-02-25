@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+min-height:100vh;
+background:radial-gradient(circle,#fde2e4,#fadadd);
+font-family:'Segoe UI',sans-serif;
+overflow:hidden
+}
+
+/* TAP TO BEGIN */
+#overlay{
+position:fixed;
+inset:0;
+background:radial-gradient(circle,#ff9a9e,#ff758c);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1000;
+cursor:pointer;
+transition:opacity 1s
+}
+#overlay h1{
+color:white;
+font-size:2.4rem;
+animation:pulse 1.5s infinite
+}
+#overlay.hide{opacity:0;pointer-events:none}
+@keyframes pulse{50%{transform:scale(1.1)}}
+
+/* SECTIONS */
+.section{
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+transition:1s
+}
+.hidden{opacity:0;pointer-events:none}
+
+/* WELCOME */
+#welcome h1{font-size:2.6rem;color:#ff4d6d;margin-bottom:10px}
+#welcome p{color:#555;margin-bottom:25px}
+#welcome button{
+padding:14px 42px;
+border-radius:30px;
+border:none;
+background:#ff4d6d;
+color:white;
+font-size:16px;
+cursor:pointer;
+animation:pulseBtn 2s infinite
+}
+@keyframes pulseBtn{
+0%{box-shadow:0 0 0 0 rgba(255,77,109,.6)}
+70%{box-shadow:0 0 0 18px rgba(255,77,109,0)}
+100%{box-shadow:0 0 0 0 rgba(255,77,109,0)}
+}
+
+/* BIRTHDAY TEXT */
+#birthdayText{
+font-size:3rem;
+color:rgb(105, 46, 120);
+font-weight:600;
+min-height:60px;
+text-align:center;
+margin-bottom:30px
+}
+
+/* BALLOONS */
+.balloon{
+position:absolute;
+bottom:-120px;
+width:50px;
+height:70px;
+border-radius:50%;
+animation:fly 8s linear infinite
+}
+.balloon::after{
+content:"";
+position:absolute;
+bottom:-25px;
+left:50%;
+width:2px;
+height:25px;
+background:white
+}
+@keyframes fly{to{transform:translateY(-120vh)}}
+
+/* FIREWORKS */
+.firework{
+position:absolute;
+width:6px;
+height:6px;
+border-radius:50%;
+background:white;
+animation:explode 1.5s ease-out forwards
+}
+@keyframes explode{
+to{
+opacity:0;
+transform:translate(var(--x),var(--y)) scale(0)
+}
+}
+
+/* ENVELOPE (container only fades) */
+.envelope{
+width:300px;
+height:200px;
+background:#ff758c;
+border-radius:12px;
+box-shadow:0 25px 40px rgba(0,0,0,.25);
+position:relative;
+margin-top:20px;
+opacity:0;
+transform:scale(.9);
+transition:1s
+}
+.envelope.show{opacity:1;transform:scale(1)}
+.flap{
+position:absolute;
+top:0;
+left:0;
+border-left:150px solid transparent;
+border-right:150px solid transparent;
+border-top:100px solid #ff4d6d;
+transform-origin:top;
+transition:1s
+}
+.envelope.open .flap{transform:rotateX(180deg)}
+
+/* Only envelope fades */
+@keyframes fadeEnvelope{
+to{opacity:0;transform:scale(.9)}
+}
+.envelope.fade{animation:fadeEnvelope 1.2s forwards}
+
+/* LETTER (separate – stays visible) */
+.letter{
+width:280px;
+background:white;
+border-radius:10px;
+padding:18px;
+text-align:center;
+box-shadow:0 20px 35px rgba(0,0,0,.3);
+opacity:0;
+transform:translateY(30px);
+transition:1.4s;
+margin-top:-120px;
+z-index:5
+}
+.letter img{
+width:80px;
+height:80px;
+border-radius:50%;
+border:3px solid #ff758c;
+margin-bottom:10px
+}
+.letter h2{
+font-family:'Great Vibes',cursive;
+font-size:2rem;
+color:#ff4d6d
+}
+.letter.show{
+opacity:1;
+transform:translateY(0)
+}
+
+/* BUTTONS */
+.action-btn{
+padding:14px 40px;
+border-radius:30px;
+border:none;
+background:white;
+color:#ff4d6d;
+font-size:16px;
+cursor:pointer;
+opacity:0;
+transform:scale(.9);
+transition:.6s;
+margin-top:20px
+}
+.action-btn.show{
+opacity:1;
+transform:scale(1)
+}
+
+/* Mobile */
+@media(max-width:480px){
+#birthdayText{font-size:2.2rem}
+.envelope{width:260px;height:180px}
+.letter{width:240px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- TAP TO BEGIN -->
+<div id="overlay" onclick="beginExperience()">
+<h1>Tap to Begin 🎶</h1>
+</div>
+
+<!-- WELCOME -->
+<div class="section hidden" id="welcome">
+<h1>Hey Sweetie 💖</h1>
+<p>Something special is waiting for you</p>
+<button onclick="startLove()">Enter 💕</button>
+</div>
+
+<!-- LOVE -->
+<div class="section hidden" id="love">
+<div id="birthdayText"></div>
+
+<button class="action-btn" id="openEnvelopeBtn" onclick="showEnvelope()">
+Open the Surprise 💌
+</button>
+
+<div class="envelope" id="envelope">
+<div class="flap"></div>
+</div>
+
+<div class="letter" id="letter">
+<img src="photo.png">
+<h2>My Sweetie 💖</h2>
+<p>
+Hey I wish you Happiest Birthday !!<br>
+This is just a small piece of my love.<BR>
+    I can just wish like this only...<br>
+    hope you still remember me !..<br>
+    <h3>Happy Birthday !! Khyati ji!!</h3> 
+</p>
+</div>
+
+<button class="action-btn" id="finalBtn" onclick="openNext()">
+Open Next 💖
+</button>
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+<source src="birthday-music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music=document.getElementById("music");
+const text="Happy Birthday Ms!! 🎉🎂";
+let i=0;
+
+/* BEGIN */
+function beginExperience(){
+music.volume=.5;
+music.play();
+overlay.classList.add("hide");
+welcome.classList.remove("hidden");
+}
+
+/* START LOVE */
+function startLove(){
+welcome.classList.add("hidden");
+love.classList.remove("hidden");
+launchBalloons();
+typeText();
+}
+
+/* TYPEWRITER */
+function typeText(){
+if(i<text.length){
+birthdayText.textContent+=text[i];
+fireworks();
+i++;
+setTimeout(typeText,120);
+}else{
+openEnvelopeBtn.classList.add("show");
+}
+}
+
+/* FIREWORKS */
+function fireworks(){
+for(let j=0;j<18;j++){
+const f=document.createElement("div");
+f.className="firework";
+f.style.left="50%";
+f.style.top="45%";
+f.style.background=`hsl(${Math.random()*360},100%,70%)`;
+f.style.setProperty("--x",(Math.random()*400-200)+"px");
+f.style.setProperty("--y",(Math.random()*400-200)+"px");
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1500);
+}
+}
+
+/* BALLOONS */
+function launchBalloons(){
+const colors=["#ffb703","#8ecae6","#ffafcc","#bdb2ff","#ffd166"];
+for(let k=0;k<14;k++){
+const b=document.createElement("div");
+b.className="balloon";
+b.style.left=Math.random()*100+"vw";
+b.style.background=colors[Math.floor(Math.random()*colors.length)];
+b.style.animationDuration=6+Math.random()*6+"s";
+document.body.appendChild(b);
+}
+}
+
+/* ENVELOPE SEQUENCE */
+function showEnvelope(){
+openEnvelopeBtn.classList.remove("show");
+
+envelope.classList.add("show");
+setTimeout(()=>envelope.classList.add("open"),600);
+setTimeout(()=>letter.classList.add("show"),1200);
+setTimeout(()=>envelope.classList.add("fade"),2600);
+setTimeout(()=>finalBtn.classList.add("show"),3800);
+}
+
+/* FINAL LINK */
+function openNext(){
+window.open("https://happy-birthdayji.my.canva.site/doesn-t-matter");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+min-height:100vh;
+background:radial-gradient(circle,#fde2e4,#fadadd);
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+font-family:'Segoe UI',sans-serif
+}
+
+/* candle glow */
+.candle-glow{
+position:absolute;
+width:280px;
+height:280px;
+background:radial-gradient(circle,rgba(255,200,120,.35),transparent 70%);
+animation:flicker 3s infinite;
+z-index:1
+}
+@keyframes flicker{
+0%,100%{opacity:.5}
+50%{opacity:.8}
+}
+
+/* hearts */
+.heart{
+position:absolute;
+font-size:14px;
+opacity:.6;
+animation:float 6s linear infinite
+}
+@keyframes float{
+from{transform:translateY(100vh);opacity:0}
+to{transform:translateY(-10vh);opacity:1}
+}
+
+/* envelope */
+.envelope{
+width:300px;
+height:200px;
+background:#ff758c;
+border-radius:12px;
+box-shadow:0 25px 40px rgba(0,0,0,.25);
+position:relative;
+z-index:10
+}
+.flap{
+position:absolute;
+top:0;
+left:0;
+border-left:150px solid transparent;
+border-right:150px solid transparent;
+border-top:100px solid #ff4d6d;
+transform-origin:top;
+transition:1s
+}
+
+/* letter */
+.letter{
+position:absolute;
+width:280px;
+background:white;
+border-radius:10px;
+padding:18px;
+text-align:center;
+box-shadow:0 20px 35px rgba(0,0,0,.3);
+opacity:0;
+transform:translateY(120%);
+transition:1.4s;
+z-index:20
+}
+
+.letter img{
+width:80px;
+height:80px;
+border-radius:50%;
+border:3px solid #ff758c;
+object-fit:cover;
+margin-bottom:8px
+}
+.letter h2{
+font-family:'Great Vibes',cursive;
+font-size:2rem;
+color:#ff4d6d;
+margin:0
+}
+.letter p{
+font-size:14px;
+line-height:1.5;
+color:#444
+}
+
+/* signature */
+.signature path{
+fill:none;
+stroke:#ff4d6d;
+stroke-width:2;
+stroke-dasharray:600;
+stroke-dashoffset:600;
+animation:write 4s forwards
+}
+@keyframes write{to{stroke-dashoffset:0}}
+
+/* open states */
+.envelope.open .flap{transform:rotateX(180deg)}
+.letter.show{opacity:1;transform:translateY(-20px)}
+
+/* envelope fade */
+@keyframes fadeEnvelope{
+to{opacity:0;transform:scale(.95)}
+}
+.envelope.fade{animation:fadeEnvelope 1.2s forwards}
+
+/* final button */
+.final-btn{
+position:absolute;
+bottom:20px;
+padding:12px 32px;
+border-radius:30px;
+border:none;
+background:#ff4d6d;
+color:white;
+font-size:15px;
+cursor:pointer;
+opacity:0;
+transform:scale(.9);
+transition:.5s;
+z-index:30
+}
+.final-btn.show{opacity:1;transform:scale(1)}
+
+/* iframe overlay */
+#siteOverlay{
+position:fixed;
+inset:0;
+background:white;
+z-index:1000;
+opacity:0;
+pointer-events:none;
+transition:1s
+}
+#siteOverlay.show{
+opacity:1;
+pointer-events:all
+}
+#siteFrame{
+width:100%;
+height:100%;
+border:none
+}
+
+/* mobile */
+@media(max-width:480px){
+.envelope{width:260px;height:180px}
+.letter{width:240px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="candle-glow"></div>
+
+<div class="envelope" id="envelope">
+<div class="flap"></div>
+</div>
+
+<div class="letter" id="letter">
+<img src="photo.png">
+<h2>My Sweetie 💖</h2>
+<p>
+From the moment you came into my life,<br>
+everything felt warmer and brighter.<br>
+Your smile is my favorite place to be.<br>
+I’m so thankful for you — always.
+</p>
+<svg class="signature" viewBox="0 0 500 120">
+<path d="M10 80 Q80 20 150 80 T290 80 Q350 40 420 70"/>
+</svg>
+</div>
+
+<button class="final-btn" id="finalBtn" onclick="openNext()">
+Open Next 💖
+</button>
+
+<audio id="music" loop autoplay>
+<source src="birthday-music.mp3" type="audio/mpeg">
+</audio>
+
+<div id="siteOverlay">
+<iframe id="siteFrame"></iframe>
+</div>
+
+<script>
+const music=document.getElementById("music");
+music.volume=.5;
+
+/* hearts */
+setInterval(()=>{
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},800);
+
+/* animation flow */
+setTimeout(()=>{
+envelope.classList.add("open");
+
+setTimeout(()=>letter.classList.add("show"),600);
+setTimeout(()=>envelope.classList.add("fade"),2000);
+setTimeout(()=>finalBtn.classList.add("show"),3200);
+
+},2000);
+
+/* open next site without stopping music */
+function openNext(){
+siteFrame.src="https://happy-birthdayji.my.canva.site/doesn-t-matter";
+siteOverlay.classList.add("show");
+}
+</script>
+
+</body>
+</html>
